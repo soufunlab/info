@@ -27,8 +27,8 @@ import java.util.Map;
 public class MybatisConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.master.datasource")
     @Primary
+    @ConfigurationProperties(prefix = "spring.master.datasource")
     public DataSource masterDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -54,7 +54,6 @@ public class MybatisConfig {
     }
 
     @Bean
-    @Primary
     public SqlSessionFactory sqlSessionFactoryInfo(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
@@ -65,7 +64,6 @@ public class MybatisConfig {
     }
 
     @Bean
-    @Primary
     public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactoryInfo) throws Exception {
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactoryInfo);
         return template;
