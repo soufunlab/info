@@ -1,14 +1,9 @@
 spring:
   profiles:
     active: dev
-
-mybatis:
-  mapperLocations: classpath:sqlmap/**/*.xml
-  typeAliasesPackage: com.ratel.info.api.model
+  datasource:
+    initialize: false
 
 #mybatis:
 #  mapperLocations: classpath:sqlmap/**/*.xml
 #  typeAliasesPackage: com.ratel.info.api.model
-#  configuration:
-#    database-id: test1
-#  type-handlers-package: com.ratel.info.impl.api.dao
