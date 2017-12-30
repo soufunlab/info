@@ -39,7 +39,7 @@ public class MybatisConfig {
     }
 
     @Bean
-    public DynamicDataSource infoDydataSource(@Qualifier("masterDataSource") DataSource materDataSource,
+    public DynamicDataSource infoDynamicdataSource(@Qualifier("masterDataSource") DataSource materDataSource,
                                         @Qualifier("slave1DataSource") DataSource slave1DataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(InfoDataSourceType.MASTER, materDataSource);
@@ -53,7 +53,7 @@ public class MybatisConfig {
     }
 
     @Bean
-    public SqlSessionFactory sqlSessionFactoryInfo(@Qualifier("infoDydataSource") DynamicDataSource dataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactoryInfo(@Qualifier("infoDynamicdataSource") DynamicDataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -69,7 +69,7 @@ public class MybatisConfig {
     }
 
     @Bean
-    public DataSourceTransactionManager infoTransactionManager(@Qualifier("infoDydataSource") DynamicDataSource masterDataSource){
+    public DataSourceTransactionManager infoTransactionManager(@Qualifier("infoDynamicdataSource") DynamicDataSource masterDataSource){
         DataSourceTransactionManager trx = new DataSourceTransactionManager();
         trx.setDataSource(masterDataSource);
         return trx;
