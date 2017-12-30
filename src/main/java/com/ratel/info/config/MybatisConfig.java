@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -23,11 +24,9 @@ import java.util.Map;
 
 @Configurable
 @MapperScan(basePackages = {"com.ratel.info.impl.api.dao"},sqlSessionFactoryRef = "sqlSessionFactoryInfo")
-@EnableTransactionManagement
 public class MybatisConfig {
 
     @Bean
-    @Primary
     @ConfigurationProperties(prefix = "spring.master.datasource")
     public DataSource masterDataSource() {
         return DataSourceBuilder.create().build();
@@ -40,7 +39,7 @@ public class MybatisConfig {
     }
 
     @Bean
-    public DynamicDataSource dataSource(@Qualifier("masterDataSource") DataSource materDataSource,
+    public DynamicDataSource infoDydataSource(@Qualifier("masterDataSource") DataSource materDataSource,
                                         @Qualifier("slave1DataSource") DataSource slave1DataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(InfoDataSourceType.MASTER, materDataSource);
@@ -54,7 +53,7 @@ public class MybatisConfig {
     }
 
     @Bean
-    public SqlSessionFactory sqlSessionFactoryInfo(DataSource dataSource) throws Exception {
+    public SqlSessionFactory sqlSessionFactoryInfo(@Qualifier("infoDydataSource") DynamicDataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
         factoryBean.setDataSource(dataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -64,11 +63,17 @@ public class MybatisConfig {
     }
 
     @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactoryInfo) throws Exception {
+    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("sqlSessionFactoryInfo") SqlSessionFactory sqlSessionFactoryInfo) throws Exception {
         SqlSessionTemplate template = new SqlSessionTemplate(sqlSessionFactoryInfo);
         return template;
     }
 
+    @Bean
+    public DataSourceTransactionManager infoTransactionManager(@Qualifier("infoDydataSource") DynamicDataSource masterDataSource){
+        DataSourceTransactionManager trx = new DataSourceTransactionManager();
+        trx.setDataSource(masterDataSource);
+        return trx;
+    }
 }
 
 class DynamicDataSource extends AbstractRoutingDataSource {
