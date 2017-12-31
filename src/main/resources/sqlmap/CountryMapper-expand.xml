@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 存放手写的sql -->
+<mapper namespace="com.ratel.info.impl.api.dao.CountryMapper">
+
+	<resultMap id="BaseResultMapVo" type="com.ratel.info.api.model.Country">
+			<result property="code" column="Code"/>
+			<result property="name" column="Name"/>
+			<result property="continent" column="Continent"/>
+			<result property="region" column="Region"/>
+			<result property="surfaceArea" column="SurfaceArea"/>
+			<result property="indepYear" column="IndepYear"/>
+			<result property="population" column="Population"/>
+			<result property="lifeExpectancy" column="LifeExpectancy"/>
+			<result property="gnp" column="GNP"/>
+			<result property="gnpold" column="GNPOld"/>
+			<result property="localName" column="LocalName"/>
+			<result property="governmentForm" column="GovernmentForm"/>
+			<result property="headOfState" column="HeadOfState"/>
+			<result property="capital" column="Capital"/>
+			<result property="code2" column="Code2"/>
+	</resultMap>
+	
+</mapper>

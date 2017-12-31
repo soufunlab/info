@@ -1,10 +1,8 @@
 package com.ratel.info.controller;
 
 import com.ratel.common.model.base.Result;
-import com.ratel.info.api.constants.InfoDataSourceType;
-import com.ratel.info.api.domin.CityApi;
+import com.ratel.info.api.domain.CityApi;
 import com.ratel.info.api.model.City;
-import com.ratel.info.config.DatabaseContextHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

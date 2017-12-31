@@ -1,11 +1,11 @@
-package com.ratel.info.impl.api.domin;
+package com.ratel.info.impl.api.domain;
 
 import com.ratel.common.model.MoChecker;
 import com.ratel.common.model.base.Result;
 import com.ratel.common.model.page.Pagination;
 import com.ratel.common.utils.ExceptionUtils;
 import com.ratel.info.api.constants.ErroType;
-import com.ratel.info.api.domin.CityApi;
+import com.ratel.info.api.domain.CityApi;
 import com.ratel.info.api.model.City;
 import com.ratel.info.api.query.CitySearchParameter;
 import com.ratel.info.impl.api.service.CityService;

@@ -1,4 +1,4 @@
-package com.ratel.info;
+package com.ratel.info.test;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

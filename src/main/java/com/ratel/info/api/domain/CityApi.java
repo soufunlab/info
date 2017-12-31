@@ -1,4 +1,4 @@
-package com.ratel.info.api.domin;
+package com.ratel.info.api.domain;
 
 import com.ratel.common.model.base.Result;
 import com.ratel.common.model.page.Pagination;
