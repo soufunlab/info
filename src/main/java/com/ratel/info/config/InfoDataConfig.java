@@ -22,9 +22,12 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.ratel.info.api.constants.InfoDataSourceType;
+
+
 @Configurable
-@MapperScan(basePackages = {"com.ratel.info.impl.api.dao"},sqlSessionFactoryRef = "sqlSessionFactoryInfo")
-public class MybatisConfig {
+@MapperScan(basePackages = {"com.ratel.info.impl.api.dao"}, sqlSessionFactoryRef = "sqlSessionFactoryInfo")
+public class InfoDataConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.master.datasource")
@@ -40,7 +43,7 @@ public class MybatisConfig {
 
     @Bean
     public DynamicDataSource infoDynamicdataSource(@Qualifier("masterDataSource") DataSource materDataSource,
-                                        @Qualifier("slave1DataSource") DataSource slave1DataSource) {
+                                                   @Qualifier("slave1DataSource") DataSource slave1DataSource) {
         Map<Object, Object> targetDataSources = new HashMap<>();
         targetDataSources.put(InfoDataSourceType.MASTER, materDataSource);
         targetDataSources.put(InfoDataSourceType.SLAVE1, slave1DataSource);
@@ -69,10 +72,14 @@ public class MybatisConfig {
     }
 
     @Bean
-    public DataSourceTransactionManager infoTransactionManager(@Qualifier("infoDynamicdataSource") DynamicDataSource masterDataSource){
+    public DataSourceTransactionManager infoTransactionManager(@Qualifier("infoDynamicdataSource") DynamicDataSource masterDataSource) {
         DataSourceTransactionManager trx = new DataSourceTransactionManager();
         trx.setDataSource(masterDataSource);
         return trx;
+    }
+
+    public static void setDatabaseType(InfoDataSourceType type) {
+        DatabaseContextHolder.setDatabaseType(type);
     }
 }
 
@@ -83,5 +90,17 @@ class DynamicDataSource extends AbstractRoutingDataSource {
     }
 }
 
+
+class DatabaseContextHolder {
+    private static final ThreadLocal<InfoDataSourceType> contextHolder = new ThreadLocal<>();
+
+    public static void setDatabaseType(InfoDataSourceType type) {
+        contextHolder.set(type);
+    }
+
+    public static InfoDataSourceType getDatabaseType() {
+        return contextHolder.get();
+    }
+}
 
 
