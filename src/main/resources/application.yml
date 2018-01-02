@@ -7,3 +7,5 @@ spring:
 #mybatis:
 #  mapperLocations: classpath:sqlmap/**/*.xml
 #  typeAliasesPackage: com.ratel.info.api.model
+app:
+  tokenCode: 123456

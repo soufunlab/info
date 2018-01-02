@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -25,7 +26,7 @@ import java.util.Map;
 import com.ratel.info.api.constants.InfoDataSourceType;
 
 
-@Configurable
+@Configuration
 @MapperScan(basePackages = {"com.ratel.info.impl.api.dao"}, sqlSessionFactoryRef = "sqlSessionFactoryInfo")
 public class InfoDataConfig {
 

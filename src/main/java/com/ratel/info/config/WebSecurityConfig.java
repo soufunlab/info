@@ -1,8 +1,9 @@
 package com.ratel.info.config;
 
 import com.ratel.info.api.annotations.AuthPassport;
+import com.ratel.info.impl.api.utils.AesUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.HandlerMethod;
@@ -10,10 +11,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
 
 @Configuration
 public class WebSecurityConfig extends WebMvcConfigurerAdapter {
@@ -30,8 +30,13 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 }
 
 class SecurityHandler extends HandlerInterceptorAdapter {
+
+    @Autowired
+    private AppConfig appConfig;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             AuthPassport methodAnno = handlerMethod.getMethodAnnotation(AuthPassport.class);
@@ -47,5 +52,22 @@ class SecurityHandler extends HandlerInterceptorAdapter {
         }
 
         return true;
+    }
+
+    private boolean verifyAuth(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null && cookies.length > 0) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("token") && StringUtils.isNotEmpty(cookie.getValue())) {
+                    String decryptStr = AesUtil.decrypt(appConfig.getTokenCode(), cookie.getValue());
+                    try {
+                        int accountId = Integer.parseInt(decryptStr.split("|")[0]);
+                    } catch (Exception err) {
+                    }
+                }
+            }
+
+        }
+        return false;
     }
 }
