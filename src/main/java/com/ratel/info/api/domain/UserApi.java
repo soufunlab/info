@@ -19,54 +19,48 @@ public interface UserApi {
 	* @Description:
 	* @version 1.0 2018/01/03 03:35 by 李浩（lihao@cloud-young.com）创建
 	* @param entity
-	* @param sessionId
 	* @return
 	*/
-	Result<User> addUser(User entity, String sessionId);
+	Result<User> addUser(User entity);
 	
 	/**
 	* @Description:
 	* @version 1.0 2018/01/03 03:35 by 李浩（lihao@cloud-young.com）创建
 	* @param id
-	* @param sessionId
 	* @return
 	*/
-	Result<Boolean> delUserById(Integer id, String sessionId);
+	Result<Boolean> delUserById(Integer id);
 	
 	/**
 	* @Description:
 	* @version 1.0 2018/01/03 03:35 by 李浩（lihao@cloud-young.com）创建
 	* @param id
-	* @param sessionId
 	* @return
 	*/
-	Result<User> getUserById(Integer id, String sessionId);
+	Result<User> getUserById(Integer id);
 	
 	/**
 	 * @Description:
 	 * @version 1.0 2018/01/03 03:35 by 李浩（lihao@cloud-young.com）创建
 	 * @param entity
-	 * @param sessionId
 	 * @return
 	 */
-	Result<Boolean> updateUser(User entity, String sessionId);
+	Result<Boolean> updateUser(User entity);
 	
 	/**
 	 * @Description:
 	 * @version 1.0 2018/01/03 03:35 by 李浩（lihao@cloud-young.com）创建
 	 * @param searchVo
-	 * @param sessionId
 	 * @return
 	 */
-	Result<List<User>> getUserListByCondition(UserSearchParameter searchVo,String sessionId);
+	Result<List<User>> getUserListByCondition(UserSearchParameter searchVo);
 	
 	/**
 	 * @Description:
 	 * @version 1.0 2018/01/03 03:35 by 李浩（lihao@cloud-young.com）创建
 	 * @param searchVo
 	 * @param page
-	 * @param sessionId
 	 * @return
 	 */
-	Result<Pagination<User>> getUserPageListByCondition(UserSearchParameter searchVo,Pagination page,String sessionId);
+	Result<Pagination<User>> getUserPageListByCondition(UserSearchParameter searchVo,Pagination page);
 }

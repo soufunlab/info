@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.ratel.info.impl.api.service.*;
 import com.ratel.info.api.model.*;
 import com.ratel.common.model.base.Result;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import com.ratel.info.api.constants.*;
 import com.ratel.info.api.query.*;
@@ -24,17 +26,17 @@ import com.ratel.common.utils.ExceptionUtils;
 
 @Service("userApi")
 public class UserApiImpl implements UserApi {
-	
-	private static LogUtil logger = LogUtil.build(UserApiImpl.class);
-	
-	@Autowired
+
+    private static LogUtil logger = LogUtil.build(UserApiImpl.class);
+
+    @Autowired
     private UserService service;
-	
-	@Override
-	public Result<User> getUserById(Integer id, String sessionId){
-		try {
+
+    @Override
+    public Result<User> getUserById(Integer id) {
+        try {
             if (id == null) {
-				return new Result(ErroType.PARAMETER_ERROR.value(),ErroType.PARAMETER_ERROR.message());
+                return new Result(ErroType.PARAMETER_ERROR.value(), ErroType.PARAMETER_ERROR.message());
             }
 
             User result = service.selectByPrimaryKey(id);
@@ -46,11 +48,11 @@ public class UserApiImpl implements UserApi {
             logger.error("getUser", ex);
             return new Result(ErroType.INNER_ERROR.value(), ErroType.INNER_ERROR.message() + ":" + ExceptionUtils.errInfo(ex));
         }
-	}
-	
-	@Override
-	public Result<User> addUser(User entity, String sessionId){
-		
+    }
+
+    @Override
+    public Result<User> addUser(User entity) {
+
         try {
             String cs = MoChecker.checkInsert(entity);
             if (StringUtils.isNotEmpty(cs)) {
@@ -67,55 +69,55 @@ public class UserApiImpl implements UserApi {
             return new Result(ErroType.INNER_ERROR.value(), ErroType.INNER_ERROR.message() + ":" + ExceptionUtils.errInfo(ex));
         }
     }
-	
-	@Override
-	public Result<Boolean> delUserById(Integer id, String sessionId) {
+
+    @Override
+    public Result<Boolean> delUserById(Integer id) {
         try {
             if (id == null) {
-                return new Result(ErroType.PARAMETER_ERROR.value(),ErroType.PARAMETER_ERROR.message());
+                return new Result(ErroType.PARAMETER_ERROR.value(), ErroType.PARAMETER_ERROR.message());
             }
-			
-			User entity = service.selectByPrimaryKey(id);
-			if (entity != null) {
-				entity.setIsActive(0);
-				int count = service.updateByPrimaryKeySelective(entity);
-				if (count > 0) {
-					return new Result<Boolean>(true);
-				}
-			}
+
+            User entity = service.selectByPrimaryKey(id);
+            if (entity != null) {
+                entity.setIsActive(0);
+                int count = service.updateByPrimaryKeySelective(entity);
+                if (count > 0) {
+                    return new Result<Boolean>(true);
+                }
+            }
             return new Result(ErroType.BUSINESS_ERROR.value(), ErroType.BUSINESS_ERROR.message());
         } catch (Exception ex) {
             logger.error("updateProductGoods", ex);
             return new Result(ErroType.INNER_ERROR.value(), ErroType.INNER_ERROR.message() + ":" + ExceptionUtils.errInfo(ex));
         }
     }
-	
-	@Override
-	public Result<Boolean> updateUser(User entity, String sessionId){
-		
+
+    @Override
+    public Result<Boolean> updateUser(User entity) {
+
         try {
             String cs = MoChecker.checkUpdate(entity);
             if (StringUtils.isNotEmpty(cs)) {
-               return new Result(ErroType.PARAMETER_ERROR.value(), cs + ErroType.PARAMETER_ERROR.message() + ":" + cs);
+                return new Result(ErroType.PARAMETER_ERROR.value(), cs + ErroType.PARAMETER_ERROR.message() + ":" + cs);
             }
-			
-			int count = service.updateByPrimaryKeySelective(entity);
+
+            int count = service.updateByPrimaryKeySelective(entity);
             if (count > 0) {
                 return new Result(true);
             }
-			
+
             return new Result(ErroType.BUSINESS_ERROR.value(), ErroType.BUSINESS_ERROR.message());
         } catch (Exception ex) {
             logger.error("updateUser", ex);
             return new Result(ErroType.INNER_ERROR.value(), ErroType.INNER_ERROR.message() + ":" + ExceptionUtils.errInfo(ex));
         }
     }
-	
-	@Override
-	public Result<List<User>> getUserListByCondition(UserSearchParameter searchVo,String sessionId){
+
+    @Override
+    public Result<List<User>> getUserListByCondition(UserSearchParameter searchVo) {
         try {
             if (searchVo == null) {
-                return new Result(ErroType.PARAMETER_ERROR.value(),ErroType.PARAMETER_ERROR.message());
+                return new Result(ErroType.PARAMETER_ERROR.value(), ErroType.PARAMETER_ERROR.message());
             }
             List<User> list = service.getUserListByCondition(searchVo);
             return new Result<List<User>>(list);
@@ -124,18 +126,18 @@ public class UserApiImpl implements UserApi {
             return new Result(ErroType.INNER_ERROR.value(), ErroType.INNER_ERROR.message() + ":" + ExceptionUtils.errInfo(ex));
         }
     }
-	
-	@Override
-	public Result<Pagination<User>> getUserPageListByCondition(UserSearchParameter searchVo,Pagination page,String sessionId){
-		try {
-            if (searchVo == null||page == null) {
-                return new Result(ErroType.PARAMETER_ERROR.value(),ErroType.PARAMETER_ERROR.message());
+
+    @Override
+    public Result<Pagination<User>> getUserPageListByCondition(UserSearchParameter searchVo, Pagination page) {
+        try {
+            if (searchVo == null || page == null) {
+                return new Result(ErroType.PARAMETER_ERROR.value(), ErroType.PARAMETER_ERROR.message());
             }
-            Pagination<User> list = service.getUserPageListByCondition(searchVo,page);
+            Pagination<User> list = service.getUserPageListByCondition(searchVo, page);
             return new Result<Pagination<User>>(list);
         } catch (Exception ex) {
             logger.error("getUserVoListByCondition", ex);
             return new Result(ErroType.INNER_ERROR.value(), ErroType.INNER_ERROR.message() + ":" + ExceptionUtils.errInfo(ex));
         }
-	}
+    }
 }

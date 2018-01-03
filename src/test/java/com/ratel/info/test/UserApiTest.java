@@ -108,7 +108,7 @@ public class UserApiTest extends BaseTest {
 	
 	@Test
     public void delUserById() {
-		Result<Boolean> result = api.delUserById(1,"test");
+		Result<Boolean> result = api.delUserById(1);
 		Assert.assertTrue(result.isSuccess());
     }
 }
