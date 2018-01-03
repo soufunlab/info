@@ -1,6 +1,9 @@
 package com.ratel.info.config;
 
 import com.ratel.info.api.annotations.AuthPassport;
+import com.ratel.info.api.model.User;
+import com.ratel.info.api.model.UserExample;
+import com.ratel.info.impl.api.service.UserService;
 import com.ratel.info.impl.api.utils.AesUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,20 +36,27 @@ class SecurityHandler extends HandlerInterceptorAdapter {
 
     @Autowired
     private AppConfig appConfig;
+    @Autowired
+    private UserService userService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             AuthPassport methodAnno = handlerMethod.getMethodAnnotation(AuthPassport.class);
             if (methodAnno != null) {
-
+                if (!verifyAuth(request)) {
+                    response.sendRedirect("/login.html");
+                    return false;
+                }
             } else {
                 Class<?> type = handlerMethod.getBeanType(); //对应的controller方法
                 AuthPassport classAnno = type.getAnnotation(AuthPassport.class);
                 if (classAnno != null) {
-
+                    if (!verifyAuth(request)) {
+                        response.sendRedirect("/login.html");
+                        return false;
+                    }
                 }
             }
         }
@@ -61,7 +71,19 @@ class SecurityHandler extends HandlerInterceptorAdapter {
                 if (cookie.getName().equals("token") && StringUtils.isNotEmpty(cookie.getValue())) {
                     String decryptStr = AesUtil.decrypt(appConfig.getTokenCode(), cookie.getValue());
                     try {
-                        int accountId = Integer.parseInt(decryptStr.split("|")[0]);
+                        String token = decryptStr.split("|")[0];
+                        User user = userService.getUserFromCache();
+                        if (user != null && user.getToken().equals(token)) {
+                            return true;
+                        } else {
+                            UserExample example = new UserExample();
+                            example.createCriteria().andTokenEqualTo(token);
+                            User dbUser = userService.selectByExample(example).get(0);
+                            if (dbUser != null) {
+                                userService.setUserCache(user);
+                                return true;
+                            }
+                        }
                     } catch (Exception err) {
                     }
                 }
@@ -70,4 +92,5 @@ class SecurityHandler extends HandlerInterceptorAdapter {
         }
         return false;
     }
+
 }

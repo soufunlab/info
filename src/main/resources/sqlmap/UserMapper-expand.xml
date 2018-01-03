@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 存放手写的sql -->
+<mapper namespace="com.ratel.info.impl.api.dao.UserMapper">
+
+	<resultMap id="BaseResultMapVo" type="com.ratel.info.api.model.User">
+			<result property="id" column="id"/>
+			<result property="account" column="account"/>
+			<result property="password" column="password"/>
+			<result property="userNickName" column="user_nick_name"/>
+			<result property="sex" column="sex"/>
+			<result property="mobile" column="mobile"/>
+			<result property="isActive" column="is_active"/>
+			<result property="token" column="token"/>
+			<result property="createTime" column="create_time"/>
+			<result property="updateTime" column="update_time"/>
+	</resultMap>
+	
+</mapper>

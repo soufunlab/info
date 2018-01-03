@@ -2,11 +2,13 @@ package com.ratel.info.controller;
 
 import com.ratel.common.model.base.Result;
 import com.ratel.info.api.annotations.AuthPassport;
-import com.ratel.info.api.domain.CityApi;
-import com.ratel.info.api.model.City;
+import com.ratel.info.api.domain.UserApi;
+import com.ratel.info.api.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.servlet.mvc.Controller;
 
 /**
  * 说明：
@@ -19,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class Home {
 
     @Autowired
-    private CityApi cityApi;
+    private UserApi userApi;
 
     @RequestMapping("/")
     public String get() {
-
-        Result<City> city = cityApi.getCityById(2, "");
-        return city.getResult().getName();
+        RequestContextHolder.getRequestAttributes();
+        Result<User> city = userApi.getUserById(2, "");
+        return city.getResult().getMobile();
     }
 }

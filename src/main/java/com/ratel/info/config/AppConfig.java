@@ -15,4 +15,5 @@ public class AppConfig {
     public void setTokenCode(String tokenCode) {
         this.tokenCode = tokenCode;
     }
+
 }
