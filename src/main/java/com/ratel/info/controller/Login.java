@@ -20,7 +20,11 @@ public class Login {
 
     @ResponseBody
     @RequestMapping("/login.do")
-    public String login() {
+    public String login(String username, String password) {
+        return "";
+    }
+
+    public String regist(){
         return "";
     }
 }
